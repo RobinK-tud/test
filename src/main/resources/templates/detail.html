@@ -32,7 +32,10 @@
 				</form>
 			</div>
 
-			<p>Was andere Kunden über diesen Film sagen</p>	<br />
+			<p>Was andere Kunden über diesen Film sagen</p>	
+			<p>Bewertung:</p>
+			<p th:text="${newrating}"><i>0</i></p>
+			<p><b>/5</b></p><br />
 			
 			<div class="detailComments" th:remove="all-but-first" >
 				<article class="comment" th:each="comment : ${disc.comments}" th:text="${comment}">Erster !!!1111elf</article>

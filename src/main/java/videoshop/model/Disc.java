@@ -21,9 +21,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 
 //(｡◕‿◕｡)
 // Da der Shop DVD sowie BluRay verkaufen soll ist es sinnvoll eine gemeinsame Basisklasse zu erstellen.
@@ -37,11 +37,17 @@ public class Disc extends Product {
 	public static enum DiscType {
 		BLURAY, DVD;
 	}
+	
+	
 
 	// (｡◕‿◕｡)
 	// primitve Typen oder Strings müssen nicht extra für JPA annotiert werden
 	private String genre, image;
 	private DiscType type;
+	
+	private double rating=3.0;
+	
+	
 
 	// (｡◕‿◕｡)
 	// Jede Disc besitzt mehrere Kommentare, eine "1 zu n"-Beziehung -> @OneToMany für JPA
@@ -59,15 +65,19 @@ public class Disc extends Product {
 		this.image = image;
 		this.genre = genre;
 		this.type = type;
+		
 	}
 
 	public String getGenre() {
 		return genre;
 	}
 
+	
 	public void addComment(Comment comment) {
 		comments.add(comment);
+		
 	}
+	
 
 	// (｡◕‿◕｡)
 	// Es ist immer sinnvoll sich zu überlegen wie speziell der Rückgabetyp sein sollte
@@ -85,4 +95,19 @@ public class Disc extends Product {
 	public DiscType getType() {
 		return type;
 	}
+	public double getRating() {
+		return rating;
+	}
+	
+	public void setRating(double rating) {
+		this.rating=rating;
+	}
+	
+	
+	
 }
+
+
+
+
+

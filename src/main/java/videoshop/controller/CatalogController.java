@@ -45,6 +45,8 @@ class CatalogController {
 	private final VideoCatalog videoCatalog;
 	private final Inventory<InventoryItem> inventory;
 	private final BusinessTime businessTime;
+	
+	private double newrating=3.0;
 
 	// (｡◕‿◕｡)
 	// Da wir nur ein Catalog.html-Template nutzen, aber dennoch den richtigen Titel auf der Seite haben wollen,
@@ -91,6 +93,21 @@ class CatalogController {
 		model.addAttribute("disc", disc);
 		model.addAttribute("quantity", quantity);
 		model.addAttribute("orderable", quantity.isGreaterThan(NONE));
+		
+		double sum=0,num=0;
+		
+		for(Comment c:disc.getComments()){
+			sum+=c.getRating();
+			num++;
+		}
+		
+		if(num>0) newrating=sum/num;
+		else newrating=disc.getRating();
+		
+		disc.setRating(newrating);
+		
+		model.addAttribute("newrating", newrating);
+		
 
 		return "detail";
 	}
@@ -101,10 +118,17 @@ class CatalogController {
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	public String comment(@RequestParam("pid") Disc disc, @RequestParam("comment") String comment,
 			@RequestParam("rating") int rating) {
-
+		
+		
+		if(rating>5) rating=5;
+		if(rating<0) rating=0;
 		disc.addComment(new Comment(comment, rating, businessTime.getTime()));
 		videoCatalog.save(disc);
-
+		
+		
+		
+		
+		
 		return "redirect:detail/" + disc.getIdentifier();
 	}
 }
